@@ -3,27 +3,28 @@ import { connect } from 'react-redux'
 import './App.css';
 
 import { useEffect } from 'react';
-import { fetchStart, fetchSuccess } from './actions';
+import { getGifs } from './actions';
 
 import GifList from './components/GifList';
 import GifForm from './components/GifForm';
 
-import axios from 'axios';
+
 
 
 
 function App(props) {
  
-  const { loading, error } = props
+  const { loading, error, getGifs } = props
 
   console.log(props)
 
   useEffect(() => {
-    props.fetchStart();
-    axios.get("https://api.giphy.com/v1/gifs/search?api_key=1vwMgodsPjmATQfVEfbZfIzgYeNdIP6o&q=ghostbusters")
-    .then(res =>{
-      props.fetchSuccess(res.data.data);
-    })
+    getGifs('chicago')
+    // props.fetchStart();
+    // axios.get("https://api.giphy.com/v1/gifs/search?api_key=1vwMgodsPjmATQfVEfbZfIzgYeNdIP6o&q=president")
+    // .then(res =>{
+    //   props.fetchSuccess(res.data.data);
+    // })
   }, [])
 
   return (
@@ -54,4 +55,4 @@ const mapActionsToProps = () => {
   }
 }
 
-export default connect(mapStateToProps, {fetchStart, fetchSuccess})(App);
+export default connect(mapStateToProps, {getGifs})(App);
