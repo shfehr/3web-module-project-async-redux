@@ -1,16 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import './App.css';
-import data from './data/gifs';
+
+import { useEffect } from 'react';
+import { fetchStart, fetchSuccess } from './actions';
+
 import GifList from './components/GifList';
 import GifForm from './components/GifForm';
+
+import axios from 'axios';
 
 
 
 function App(props) {
-  // console.log(props)
-
+ 
   const { loading, error } = props
+
+  console.log(props)
+
+  useEffect(() => {
+    props.fetchStart();
+    axios.get("https://api.giphy.com/v1/gifs/search?api_key=1vwMgodsPjmATQfVEfbZfIzgYeNdIP6o&q=ghostbusters")
+    .then(res =>{
+      props.fetchSuccess(res.data.data);
+    })
+  }, [])
 
   return (
     <div className="App">
@@ -34,4 +48,10 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(App);
+const mapActionsToProps = () => {
+  return{
+    fetchStart: fetchStart
+  }
+}
+
+export default connect(mapStateToProps, {fetchStart, fetchSuccess})(App);
